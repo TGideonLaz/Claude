@@ -160,56 +160,60 @@ export default function SendSMS() {
         {/* Category Selector */}
         <div className="card" style={{ position: 'sticky', top: 24 }}>
           <div className="card-header"><span className="card-title">Target Audience</span></div>
-          <p style={{ fontSize: 13, color: 'var(--gray-500)', margin: '0 0 12px' }}>
-            {selectedCats.length === 0
-              ? 'All contacts will receive this message.'
-              : `${selectedCats.length} categor${selectedCats.length === 1 ? 'y' : 'ies'} selected.`}
-          </p>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            <label style={{
-              display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer',
-              padding: '8px 10px', borderRadius: 8,
-              background: selectedCats.length === 0 ? 'var(--primary-light)' : 'transparent',
-              fontWeight: selectedCats.length === 0 ? 600 : 400,
-            }}>
-              <input
-                type="checkbox"
-                checked={selectedCats.length === 0}
-                onChange={() => setSelectedCats([])}
-                style={{ accentColor: 'var(--primary)' }}
-              />
-              <span>All contacts</span>
-              <span className="badge badge-primary" style={{ marginLeft: 'auto' }}>
-                {categories.reduce((s, c) => s + (c.contact_count || 0), 0)}
-              </span>
-            </label>
-            <div style={{ borderTop: '1px solid var(--gray-100)', paddingTop: 8 }}>
-              {categories.map(cat => (
-                <label key={cat.id} style={{
-                  display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer',
-                  padding: '8px 10px', borderRadius: 8,
-                  background: selectedCats.includes(cat.id) ? 'var(--primary-light)' : 'transparent',
-                }}>
-                  <input
-                    type="checkbox"
-                    checked={selectedCats.includes(cat.id)}
-                    onChange={() => toggleCat(cat.id)}
-                    style={{ accentColor: 'var(--primary)' }}
-                  />
-                  <span style={{ flex: 1 }}>{cat.name}</span>
-                  <span className="badge" style={{ marginLeft: 'auto' }}>{cat.contact_count || 0}</span>
-                </label>
-              ))}
+          <div className="card-body" style={{ paddingTop: 12 }}>
+            <p style={{ fontSize: 13, color: 'var(--gray-500)', marginBottom: 12 }}>
+              {selectedCats.length === 0
+                ? 'All contacts will receive this message.'
+                : `${selectedCats.length} categor${selectedCats.length === 1 ? 'y' : 'ies'} selected.`}
+            </p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+              <label style={{
+                display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer',
+                padding: '8px 10px', borderRadius: 8,
+                background: selectedCats.length === 0 ? 'var(--primary-light)' : 'transparent',
+                fontWeight: selectedCats.length === 0 ? 600 : 400,
+              }}>
+                <input
+                  type="checkbox"
+                  checked={selectedCats.length === 0}
+                  onChange={() => setSelectedCats([])}
+                  style={{ accentColor: 'var(--primary)' }}
+                />
+                <span style={{ flex: 1 }}>All contacts</span>
+                <span className="badge badge-primary">
+                  {categories.reduce((s, c) => s + (c.contact_count || 0), 0)}
+                </span>
+              </label>
+              {categories.length > 0 && (
+                <div style={{ borderTop: '1px solid var(--gray-100)', marginTop: 4, paddingTop: 4 }}>
+                  {categories.map(cat => (
+                    <label key={cat.id} style={{
+                      display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer',
+                      padding: '8px 10px', borderRadius: 8,
+                      background: selectedCats.includes(cat.id) ? 'var(--primary-light)' : 'transparent',
+                    }}>
+                      <input
+                        type="checkbox"
+                        checked={selectedCats.includes(cat.id)}
+                        onChange={() => toggleCat(cat.id)}
+                        style={{ accentColor: 'var(--primary)' }}
+                      />
+                      <span style={{ flex: 1 }}>{cat.name}</span>
+                      <span className="badge badge-gray">{cat.contact_count || 0}</span>
+                    </label>
+                  ))}
+                </div>
+              )}
             </div>
+            {recipientCount > 0 && (
+              <div className="recipient-box" style={{ marginTop: 16 }}>
+                <span className="recipient-box-count">{recipientCount}</span>
+                <span className="recipient-box-label">
+                  recipient{recipientCount !== 1 ? 's' : ''} will receive this message
+                </span>
+              </div>
+            )}
           </div>
-          {recipientCount > 0 && (
-            <div style={{
-              marginTop: 16, padding: 12, background: 'var(--gray-50)',
-              borderRadius: 8, fontSize: 13, color: 'var(--gray-600)', textAlign: 'center',
-            }}>
-              <strong style={{ color: 'var(--primary)', fontSize: 18 }}>{recipientCount}</strong> recipient{recipientCount !== 1 ? 's' : ''} will receive this message
-            </div>
-          )}
         </div>
       </div>
     </div>
